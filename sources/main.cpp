@@ -1,6 +1,8 @@
 #include "fdf.hpp"
 
 int main(void) {
-	std::cout << "Hello, World!" << std::endl;
+	Mlx mlx;
+
+	mlx.loop();
 	return (0);
 }

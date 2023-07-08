@@ -3,4 +3,6 @@
 
 #include <iostream>
 
+#include "Mlx.hpp"
+
 #endif // !FDF_HPP
