@@ -4,7 +4,10 @@ PATH_SRCS = ./sources/
 PATH_INCLUDES = ./includes/
 PATH_OBJS = ./objects/
 
-SRCS =	main.cpp
+MLXFLAGS = -lmlx -lXext -lX11
+
+SRCS =	main.cpp \
+		Mlx.cpp
 
 OBJS = ${SRCS:%.cpp=${PATH_OBJS}%.o}
 
@@ -14,7 +17,7 @@ FLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@c++ $(FLAGS) $(OBJS) -o $(NAME)
+	@c++ $(FLAGS) $(OBJS) $(MLXFLAGS) -o $(NAME)
 
 $(PATH_OBJS)%.o: $(PATH_SRCS)%.cpp
 	@mkdir -p $(PATH_OBJS)
