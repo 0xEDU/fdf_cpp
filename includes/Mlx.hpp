@@ -3,24 +3,25 @@
 
 extern "C" {
 	#include <mlx.h>
-	#include <stdlib.h>
 }
 
 #include <iostream>
+#include <cstdlib>
 
 #define WIDTH 1200
 #define HEIGHT 800
 
 class Mlx {
 	private:
-		void *ptr;
-		void *window;
+		void *_ptr;
+		void *_window;
 	
 	public:
 		Mlx();
 		~Mlx();
 
 		void loop(void);
+		void quit(void);
 };
 
 #endif // !MLX_HPP
