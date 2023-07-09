@@ -23,6 +23,7 @@ int handleKeyPressEvents(int keyCode, Mlx &mlx) {
 	return (0);
 }
 
+static inline
 int clickPressEvents(Mlx &mlx) {
 	mlx.quit();
 	return (0);
