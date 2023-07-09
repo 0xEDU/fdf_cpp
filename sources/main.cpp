@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 	Map map;
 
 	map.loadMap(argv[1]);
-	// map.renderMap(mlx);
+	map.renderMap(mlx);
 	mlx.loop();
 	return (0);
 }

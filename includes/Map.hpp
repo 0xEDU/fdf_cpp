@@ -7,6 +7,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "Mlx.hpp"
+
 typedef std::pair<int, int> position;
 
 class Map {
@@ -17,6 +19,7 @@ class Map {
 		Map();
 		~Map();
 
+		void renderMap(Mlx &mlx);
 		void loadMap(char *mapFile);
 };
 

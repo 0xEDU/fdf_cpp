@@ -1,5 +1,7 @@
 #include "Map.hpp"
+#include <mlx.h>
 
+/* Default builders ========================================================= */
 Map::Map() : _map(std::map<position, int>()) {
 	return ;
 }
@@ -7,7 +9,19 @@ Map::Map() : _map(std::map<position, int>()) {
 Map::~Map() {
 	return ;
 }
+/* ========================================================================== */
 
+// std::ostream &operator<<(std::ostream &o, std::map<position, int> &map) {
+// 	for (auto i : map) {
+// 		o << "x = " << i.first.first
+// 			<< " | y = " << i.first.second
+// 			<< " | z = " << i.second
+// 			<< std::endl;
+// 	}
+// 	return o;
+// }
+
+/* Map loading ============================================================== */
 void Map::loadMap(char *mapFile) {
 	std::ifstream			input(mapFile);
 	std::string				line;
@@ -30,3 +44,15 @@ void Map::loadMap(char *mapFile) {
 	}
 	return ;
 }
+/* ========================================================================== */
+
+/* Map rendering ============================================================ */
+void Map::renderMap(Mlx &mlx) {
+	mlx.createImage();
+	for (int i = 0; i < 100; i++)
+		mlx.drawPixel(0 + i, 0, 0x00FF0000);
+	mlx.putImage();
+	mlx.destroyImage();
+	return ;
+}
+/* ========================================================================== */

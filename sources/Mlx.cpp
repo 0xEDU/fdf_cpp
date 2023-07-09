@@ -1,7 +1,8 @@
 #include "Mlx.hpp"
+#include <mlx.h>
 
 /* Default builders ======================================================== */
-Mlx::Mlx() {
+Mlx::Mlx() : _ptr(nullptr), _window(nullptr), _img(nullptr){
 	char windowName[] = "fdf";
 	this->_ptr = mlx_init();
 	this->_window = mlx_new_window(this->_ptr, WIDTH, HEIGHT, windowName);
@@ -12,6 +13,12 @@ Mlx::~Mlx() {
 	free(this->_window);
 	free(this->_ptr);
 	return ;
+}
+/* ========================================================================== */
+
+/* Accessors ================================================================ */
+void *Mlx::getPtr(void) const {
+	return this->_ptr;
 }
 /* ========================================================================== */
 
@@ -47,5 +54,35 @@ void Mlx::quit(void) {
 	if (this->_ptr)
 		free(this->_ptr);
 	std::exit(0);
+}
+/* ========================================================================== */
+
+/* Image handling =========================================================== */
+void Mlx::createImage() {
+	this->_img = new MlxImage;
+	this->_img->createImage(*this);
+	return ;
+}
+
+void Mlx::putImage(void) {
+	mlx_put_image_to_window(this->_ptr, this->_window, this->_img->getPtr(), 0, 0);
+	return ;
+}
+
+void Mlx::destroyImage() {
+	if (this->_img != nullptr) {
+		this->_img->destroyImage(*this);
+		delete this->_img;
+	}
+	return ;
+}
+/* ========================================================================== */
+
+/* Drawing ================================================================== */
+void Mlx::drawPixel(int x, int y, int color) {
+	if (this->_img == nullptr)
+		return ;
+	this->_img->writePixel(x, y, color);
+	return ;
 }
 /* ========================================================================== */
