@@ -14,6 +14,17 @@ extern "C" {
 #define WIDTH 1200
 #define HEIGHT 800
 
+typedef struct Vector3 {
+	int x;
+	int y;
+	int z;
+} vector3;
+
+typedef struct Vector2 {
+	int x;
+	int y;
+} vector2;
+
 class MlxImage;
 
 class Mlx {
@@ -34,6 +45,7 @@ class Mlx {
 		void destroyImage(void);
 	
 		void drawPixel(int x, int y, int color);
+		void drawLine(vector2 start, vector2 end, int color);
 
 		void *getPtr(void) const;
 };

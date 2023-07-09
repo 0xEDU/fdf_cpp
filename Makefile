@@ -8,6 +8,7 @@ MLXFLAGS = -lmlx -lXext -lX11
 
 SRCS =	main.cpp \
 		Map.cpp \
+		mapTransformations.cpp \
 		Mlx.cpp \
 		MlxImage.cpp
 

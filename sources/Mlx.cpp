@@ -1,4 +1,5 @@
 #include "Mlx.hpp"
+#include <cmath>
 #include <mlx.h>
 
 /* Default builders ======================================================== */
@@ -83,6 +84,37 @@ void Mlx::drawPixel(int x, int y, int color) {
 	if (this->_img == nullptr)
 		return ;
 	this->_img->writePixel(x, y, color);
+	return ;
+}
+
+void Mlx::drawLine(vector2 start, vector2 end, int color) {
+	vector2 delta {
+		.x = std::abs(end.x - start.x),
+		.y = -std::abs(end.y - start.y)
+	};
+	vector2 s {
+		.x = start.x < end.x ? 1 : -1,
+		.y = start.y < end.y ? 1 : -1
+	};
+	int error = delta.x + delta.y;
+
+	while (true) {
+		this->drawPixel(start.x, start.y, color);
+		if (start.x == end.x && start.y == end.y)
+			break ;
+		if ((2 * error) >= delta.y) {
+			if (start.x == end.x)
+				break ;
+			error += delta.y;
+			start.x += s.x;
+		}
+		if ((2 * error) <= delta.x) {
+			if (start.y == end.y)
+				break ;
+			error += delta.x;
+			start.y += s.y;
+		}
+	}
 	return ;
 }
 /* ========================================================================== */

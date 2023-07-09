@@ -6,14 +6,19 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <cmath>
 
 #include "Mlx.hpp"
 
-typedef std::pair<int, int> position;
-
 class Map {
 	private:
-		std::map<position, int> _map;
+		std::map<int, vector3>	_map;
+		int						_rows;
+		int						_cols;
+		
+		void isometricRender(void);
+		void transformMap(void (*transformation)(vector3 &));
+		void writeMapToImage(Mlx &);
 
 	public:
 		Map();
@@ -22,5 +27,9 @@ class Map {
 		void renderMap(Mlx &mlx);
 		void loadMap(char *mapFile);
 };
+
+void extrude(vector3 &v);
+void rotate(vector3 &v);
+void down(vector3 &v);
 
 #endif // !MAP_HPP

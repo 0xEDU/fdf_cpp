@@ -1,8 +1,7 @@
 #include "Map.hpp"
-#include <mlx.h>
 
 /* Default builders ========================================================= */
-Map::Map() : _map(std::map<position, int>()) {
+Map::Map() : _map(std::map<int, vector3>()), _rows(0), _cols(0) {
 	return ;
 }
 
@@ -25,7 +24,7 @@ Map::~Map() {
 void Map::loadMap(char *mapFile) {
 	std::ifstream			input(mapFile);
 	std::string				line;
-	int						x = 0, y = 0;
+	int						x = 0, y = 0, i = 0;
 
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
@@ -33,13 +32,14 @@ void Map::loadMap(char *mapFile) {
 
 		y = 0;
 		while (iss >> z) {
-			position pos(x, y);
+			vector3 v {x, y ,z};
 
-			this->_map.insert(std::make_pair(pos, z));
+			this->_map.insert(std::make_pair(i, v));
 			char whitespace;
 			iss >> whitespace;
 			y++;
 		}
+		i++;
 		x++;
 	}
 	return ;
@@ -47,10 +47,36 @@ void Map::loadMap(char *mapFile) {
 /* ========================================================================== */
 
 /* Map rendering ============================================================ */
+static inline
+void scaleMap(std::map<int, vector3> &map, int scaleValue) {
+	for (auto it : map) {
+		it.second.x *= scaleValue;
+		it.second.y *= scaleValue;
+		it.second.z *= scaleValue / 2;
+	}
+	return ;
+}
+
+void Map::transformMap(void (*transformation)(vector3 &)) {
+	for(auto it : this->_map)
+		transformation(it.second);
+	return ;
+}
+
+void Map::isometricRender(void) {
+	int scaleValue =
+		HEIGHT / std::sqrt(std::pow(this->_rows, 2) + std::pow(this->_cols, 2));
+	scaleMap(this->_map, scaleValue);
+	transformMap(&rotate);
+	transformMap(&down);
+	transformMap(&extrude);
+	return ;
+}
+
 void Map::renderMap(Mlx &mlx) {
 	mlx.createImage();
-	for (int i = 0; i < 100; i++)
-		mlx.drawPixel(0 + i, 0, 0x00FF0000);
+	this->isometricRender();
+	this->writeMapToImage(mlx);
 	mlx.putImage();
 	mlx.destroyImage();
 	return ;
