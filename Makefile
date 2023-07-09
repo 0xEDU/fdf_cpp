@@ -7,6 +7,7 @@ PATH_OBJS = ./objects/
 MLXFLAGS = -lmlx -lXext -lX11
 
 SRCS =	main.cpp \
+		Map.cpp \
 		Mlx.cpp
 
 OBJS = ${SRCS:%.cpp=${PATH_OBJS}%.o}
