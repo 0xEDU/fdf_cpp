@@ -8,7 +8,8 @@ MLXFLAGS = -lmlx -lXext -lX11
 
 SRCS =	main.cpp \
 		Map.cpp \
-		Mlx.cpp
+		Mlx.cpp \
+		MlxImage.cpp
 
 OBJS = ${SRCS:%.cpp=${PATH_OBJS}%.o}
 
@@ -18,11 +19,11 @@ FLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@c++ $(FLAGS) $(OBJS) $(MLXFLAGS) -o $(NAME)
+	@clang++ $(FLAGS) $(OBJS) $(MLXFLAGS) -o $(NAME)
 
 $(PATH_OBJS)%.o: $(PATH_SRCS)%.cpp
 	@mkdir -p $(PATH_OBJS)
-	@c++ $(FLAGS) $(INCLUDES) -c $< -o $@
+	@clang++ $(FLAGS) $(INCLUDES) -c $< -o $@
 	@echo "\033[1;92m[SUCCESS] Object creation done!\033[0m"
 
 clean:
