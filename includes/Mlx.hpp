@@ -11,8 +11,8 @@ extern "C" {
 
 #include "MlxImage.hpp"
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 1280
+#define HEIGHT 800
 
 typedef struct Vector3 {
 	int x;

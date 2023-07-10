@@ -61,15 +61,16 @@ void Map::loadMap(char *mapFile) {
 void Map::writeMapToImage(Mlx &mlx) {
 	for (auto it : this->_map) {
 		int position = it.first;
-		auto right = position + 1;
-		if (right + 1 <= this->_cols) {
+
+		auto right = position + this->_cols;
+		if (right < this->_rows * this->_cols) {
 			vector3 next = this->_map[right];
-			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FF0000);
+			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FFFFFF);
 		}
-		auto bottom = position + this->_cols;
-		if (bottom <= this->_cols * this->_rows) {
-			vector3 next = this->_map[bottom];
-			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FF0000);
+		auto top = position % this->_cols == 0 ? position - this->_cols : position - 1;
+		if (top >= 0) {
+			vector3 next = this->_map[top];
+			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FFFFFF);
 		}
 	}
 	return ;
@@ -104,7 +105,6 @@ void Map::isometricRender(void) {
 
 void Map::renderMap(Mlx &mlx) {
 	mlx.createImage();
-	this->_map.insert(std::make_pair(80, vector3 {10, 2, 10}));
 	this->isometricRender();
 	this->writeMapToImage(mlx);
 	mlx.putImage();
