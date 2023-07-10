@@ -10,6 +10,8 @@
 
 #include "Mlx.hpp"
 
+#define DEBUG std::cout << "entrou" << std::endl;
+
 class Map {
 	private:
 		std::map<int, vector3>	_map;
@@ -26,7 +28,12 @@ class Map {
 
 		void renderMap(Mlx &mlx);
 		void loadMap(char *mapFile);
+
+		std::map<int, vector3> &getMap(void);
 };
+
+std::ostream &operator<<(std::ostream &o, std::map<int, vector3> &map);
+std::ostream &operator<<(std::ostream &o, vector3 &v);
 
 void extrude(vector3 &v);
 void rotate(vector3 &v);

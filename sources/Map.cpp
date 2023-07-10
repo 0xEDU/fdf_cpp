@@ -10,15 +10,28 @@ Map::~Map() {
 }
 /* ========================================================================== */
 
-// std::ostream &operator<<(std::ostream &o, std::map<position, int> &map) {
-// 	for (auto i : map) {
-// 		o << "x = " << i.first.first
-// 			<< " | y = " << i.first.second
-// 			<< " | z = " << i.second
-// 			<< std::endl;
-// 	}
-// 	return o;
-// }
+/* Accessors ================================================================ */
+std::map<int, vector3> &Map::getMap(void) {
+	return this->_map;
+}
+/* ========================================================================== */
+
+std::ostream &operator<<(std::ostream &o, vector3 &v) {
+	o << "x = " << v.x
+		<< " | y = " << v.y
+		<< " | z = " << v.z
+		<< std::endl;
+	return o;
+}
+
+std::ostream &operator<<(std::ostream &o, std::map<int, vector3> &map) {
+	for (auto i : map) {
+		o << "KEY = " << i.first << " | "
+			<< i.second
+			<< std::endl;
+	}
+	return o;
+}
 
 /* Map loading ============================================================== */
 void Map::loadMap(char *mapFile) {
@@ -32,34 +45,50 @@ void Map::loadMap(char *mapFile) {
 
 		y = 0;
 		while (iss >> z) {
-			vector3 v {x, y ,z};
-
-			this->_map.insert(std::make_pair(i, v));
-			char whitespace;
-			iss >> whitespace;
+			this->_map.insert(std::make_pair(i, vector3 {x, y, z}));
 			y++;
+			i++;
 		}
-		i++;
 		x++;
 	}
+	this->_rows = x;
+	this->_cols = y;
 	return ;
 }
 /* ========================================================================== */
 
 /* Map rendering ============================================================ */
+void Map::writeMapToImage(Mlx &mlx) {
+	for (auto it : this->_map) {
+		int position = it.first;
+		auto right = position + 1;
+		if (right + 1 <= this->_cols) {
+			vector3 next = this->_map[right];
+			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FF0000);
+		}
+		auto bottom = position + this->_cols;
+		if (bottom <= this->_cols * this->_rows) {
+			vector3 next = this->_map[bottom];
+			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FF0000);
+		}
+	}
+	return ;
+}
+
 static inline
 void scaleMap(std::map<int, vector3> &map, int scaleValue) {
 	for (auto it : map) {
-		it.second.x *= scaleValue;
-		it.second.y *= scaleValue;
-		it.second.z *= scaleValue / 2;
+		auto position = it.first;
+		map[position].x *= scaleValue;
+		map[position].y *= scaleValue;
+		map[position].z *= scaleValue / 2;
 	}
 	return ;
 }
 
 void Map::transformMap(void (*transformation)(vector3 &)) {
 	for(auto it : this->_map)
-		transformation(it.second);
+		transformation(this->_map[it.first]);
 	return ;
 }
 
@@ -75,6 +104,7 @@ void Map::isometricRender(void) {
 
 void Map::renderMap(Mlx &mlx) {
 	mlx.createImage();
+	this->_map.insert(std::make_pair(80, vector3 {10, 2, 10}));
 	this->isometricRender();
 	this->writeMapToImage(mlx);
 	mlx.putImage();
