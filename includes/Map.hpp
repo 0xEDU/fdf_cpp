@@ -11,6 +11,7 @@
 #include "Mlx.hpp"
 
 #define DEBUG std::cout << "entrou" << std::endl;
+#define PRINT(x) std::cout << x << std::endl;
 
 class Map {
 	private:
@@ -21,7 +22,6 @@ class Map {
 		void isometricRender(void);
 		void transformMap(void (*transformation)(vector3 &));
 		void writeMapToImage(Mlx &);
-		void mirrorAndRotate(void);
 
 	public:
 		Map();

@@ -18,6 +18,7 @@ typedef struct Vector3 {
 	int x;
 	int y;
 	int z;
+	int color;
 } vector3;
 
 typedef struct Vector2 {

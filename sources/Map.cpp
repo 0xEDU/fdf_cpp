@@ -1,7 +1,9 @@
 #include "Map.hpp"
+#include <cstdlib>
 
 /* Default builders ========================================================= */
-Map::Map() : _map(std::map<int, vector3>()), _rows(0), _cols(0) {
+Map::Map()
+	: _map(std::map<int, vector3>()), _rows(0), _cols(0) {
 	return ;
 }
 
@@ -41,11 +43,30 @@ void Map::loadMap(char *mapFile) {
 
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
+		std::string token;
 		int z;
+		int color;
 
 		y = 0;
-		while (iss >> z) {
-			this->_map.insert(std::make_pair(i, vector3 {x, y, z}));
+		while (std::getline(iss, token, ' ')) {
+			try {
+				std::size_t commaPos = token.find(',');
+				bool hasComma = (commaPos == std::string::npos);
+
+				std::string valueStr = token.substr(0, commaPos);
+				std::string colorStr = token.substr(commaPos + 1);
+
+				z = std::stoi(hasComma
+					? token
+					: valueStr
+				);
+				color = hasComma
+					? 0x00FFFFFF
+					: std::stoi(colorStr, 0, 16);
+			} catch (const std::invalid_argument &e) {
+				continue ;
+			}
+			this->_map.insert(std::make_pair(i, vector3 {x, y, z, color}));
 			y++;
 			i++;
 		}
@@ -65,12 +86,12 @@ void Map::writeMapToImage(Mlx &mlx) {
 		auto right = position + this->_cols;
 		if (right < this->_rows * this->_cols) {
 			vector3 next = this->_map[right];
-			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FFFFFF);
+			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, it.second.color);
 		}
 		auto top = position % this->_cols == 0 ? position - this->_cols : position - 1;
 		if (top >= 0) {
 			vector3 next = this->_map[top];
-			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, 0x00FFFFFF);
+			mlx.drawLine({it.second.x, it.second.y}, {next.x, next.y}, it.second.color);
 		}
 	}
 	return ;
