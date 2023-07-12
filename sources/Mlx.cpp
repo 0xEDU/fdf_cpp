@@ -4,9 +4,14 @@
 
 /* Default builders ======================================================== */
 Mlx::Mlx() : _ptr(nullptr), _window(nullptr), _img(nullptr){
-	char windowName[] = "fdf";
+	return ;
+}
+
+Mlx::Mlx(int width, int height, const char *windowName)
+	: _width(width), _height(height) {
 	this->_ptr = mlx_init();
-	this->_window = mlx_new_window(this->_ptr, WIDTH, HEIGHT, windowName);
+	this->_window =
+		mlx_new_window(this->_ptr, width, height, (char *)windowName);
 	return ;
 }
 
@@ -60,13 +65,15 @@ void Mlx::quit(void) {
 
 /* Image handling =========================================================== */
 void Mlx::createImage() {
-	this->_img = new MlxImage;
+	this->_img = new MlxImage(this->_width, this->_height);
 	this->_img->createImage(*this);
 	return ;
 }
 
 void Mlx::putImage(void) {
-	mlx_put_image_to_window(this->_ptr, this->_window, this->_img->getPtr(), 0, 0);
+	mlx_put_image_to_window(
+		this->_ptr, this->_window, this->_img->getPtr(), 0, 0
+	);
 	return ;
 }
 

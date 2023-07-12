@@ -11,9 +11,6 @@ extern "C" {
 
 #include "MlxImage.hpp"
 
-#define WIDTH 1280
-#define HEIGHT 800
-
 typedef struct Vector3 {
 	int x;
 	int y;
@@ -30,12 +27,16 @@ class MlxImage;
 
 class Mlx {
 	private:
-		void *_ptr;
-		void *_window;
-		MlxImage *_img;
+		int			_width = 800;
+		int			_height = 600;
+
+		void		*_ptr;
+		void		*_window;
+		MlxImage	*_img;
 	
 	public:
 		Mlx();
+		Mlx(int width, int height, const char *windowName);
 		~Mlx();
 
 		void loop(void);

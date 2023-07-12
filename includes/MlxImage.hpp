@@ -15,6 +15,9 @@ class Mlx;
 
 class MlxImage {
 	private:
+		int	_width = 800;
+		int	_height = 600;
+
 		void	*_ptr;
 		char	*_addr;
 		int		_bpp;
@@ -24,6 +27,7 @@ class MlxImage {
 
 	public:
 		MlxImage();
+		MlxImage(int width, int height);
 		~MlxImage();
 
 		void writePixel(int x, int y, int color);

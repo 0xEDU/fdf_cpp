@@ -10,8 +10,8 @@
 
 #include "Mlx.hpp"
 
-#define DEBUG std::cout << "entrou" << std::endl;
-#define PRINT(x) std::cout << x << std::endl;
+#define WIDTH 1280
+#define HEIGHT 800
 
 class Map {
 	private:

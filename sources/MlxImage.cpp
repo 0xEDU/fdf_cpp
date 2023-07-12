@@ -5,9 +5,15 @@ MlxImage::MlxImage()
 	: _ptr(nullptr),
 	_addr(nullptr),
 	_bpp(0), _lineLength(0), _endian(0),
-	_limits {HEIGHT / 2, -(HEIGHT / 2), -(WIDTH / 2), WIDTH / 2}
+	_limits {0, 0, 0, 0}
 {
 	return ;
+}
+
+MlxImage::MlxImage(int width, int height)
+	: _width(width), _height(height),
+	_limits {this->_height / 2, -(this->_height / 2), -(this->_width / 2), this->_width / 2} {
+
 }
 
 MlxImage::~MlxImage() {
@@ -23,7 +29,7 @@ void *MlxImage::getPtr(void) const {
 
 /* Image builders ========================================================== */
 void MlxImage::createImage(Mlx &mlx) {
-	this->_ptr = mlx_new_image(mlx.getPtr(), WIDTH, HEIGHT);
+	this->_ptr = mlx_new_image(mlx.getPtr(), this->_width, this->_height);
 	this->_addr = mlx_get_data_addr(
 		this->_ptr, &this->_bpp, &this->_lineLength, &this->_endian
 	);

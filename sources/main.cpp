@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
 		return (1);
 	}
 
-	Mlx mlx;
+	Mlx mlx(WIDTH, HEIGHT, "fdf");
 	Map map;
 
 	map.loadMap(argv[1]);
