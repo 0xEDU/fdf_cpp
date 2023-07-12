@@ -77,6 +77,16 @@ void Map::writeMapToImage(Mlx &mlx) {
 }
 
 static inline
+void mirrorMap(std::map<int, vector3> &map, int rows, int cols) {
+	for (auto it: map) {
+		auto position = it.first;
+		map[position].x = rows - map[position].x;
+		map[position].y = cols - map[position].y;
+	}
+	return;
+}
+
+static inline
 void scaleMap(std::map<int, vector3> &map, int scaleValue) {
 	for (auto it : map) {
 		auto position = it.first;
@@ -97,6 +107,7 @@ void Map::isometricRender(void) {
 	int scaleValue =
 		HEIGHT / std::sqrt(std::pow(this->_rows, 2) + std::pow(this->_cols, 2));
 	scaleMap(this->_map, scaleValue);
+	mirrorMap(this->_map, this->_rows, this->_cols);
 	transformMap(&rotate);
 	transformMap(&down);
 	transformMap(&extrude);

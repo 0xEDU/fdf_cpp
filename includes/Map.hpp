@@ -21,6 +21,7 @@ class Map {
 		void isometricRender(void);
 		void transformMap(void (*transformation)(vector3 &));
 		void writeMapToImage(Mlx &);
+		void mirrorAndRotate(void);
 
 	public:
 		Map();
